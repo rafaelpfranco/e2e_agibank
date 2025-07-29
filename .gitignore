@@ -1,0 +1,43 @@
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# dotenv environment variables
+.env
+.env.*.local
+
+# pytest cache
+.pytest_cache/
+
+# Playwright artifacts
+trace.zip
+playwright-report/
+test-results/
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+
+# Logs
+*.log
+
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# System files
+.DS_Store
+Thumbs.db
+CACHEDIR.TAG
+
+# Miscellaneous
+*.retry

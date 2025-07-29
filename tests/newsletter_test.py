@@ -1,0 +1,28 @@
+from pages.news.news_page import NewsPage
+from utils.fake_data import generate_person_data
+from fixtures.newsletter_texts import NewsletterTexts
+
+
+def test_newsletter_subscription_from_news_page(page):
+    news_page = NewsPage(page)
+    newsletter = news_page.newsletter
+    person = generate_person_data()
+
+    news_page.navigate()
+
+    heading = newsletter.get_heading()
+    assert heading.is_visible()
+    heading_text = heading.inner_text().strip()
+    assert heading_text == NewsletterTexts.HEADING
+
+    description = newsletter.get_description()
+    assert description.is_visible()
+    description_text = description.inner_text().strip()
+    assert description_text == NewsletterTexts.DESCRIPTION
+
+    newsletter.subscribe(person["email"])
+
+    success = newsletter.get_success_message()
+    assert success.is_visible()
+    success_text = success.inner_text().strip()
+    assert success_text == NewsletterTexts.SUCCESS_MESSAGE
