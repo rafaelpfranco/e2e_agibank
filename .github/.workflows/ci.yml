@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepare reports folder
+        run: |
+          if [ "${{ runner.os }}" != "Windows" ]; then
+            mkdir -p reports
+          else
+            mkdir reports
+          fi
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          playwright install --with-deps
+
+      - name: Run tests on ${{ matrix.browser }}
+        env:
+          BROWSER: ${{ matrix.browser }}
+        run: |
+          pytest --maxfail=1 --disable-warnings \
+                 --junitxml=reports/results-${BROWSER}.xml
+
+      - name: Upload JUnit report (${{ matrix.browser }})
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-${{ matrix.browser }}
+          path: reports/results-${{ matrix.browser }}.xml
+
+  summary:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all JUnit reports
+        uses: actions/download-artifact@v3
+        with:
+          path: reports
+
+      - name: Generate summary.md
+        run: |
+          echo "## Test Summary" > summary.md
+          for file in reports/results-*.xml; do
+            echo "### $file" >> summary.md
+            grep -o 'tests="[0-9]*"' $file | head -1 >> summary.md
+            grep -o 'failures="[0-9]*"' $file | head -1 >> summary.md
+          done
+
+      - name: Upload summary
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-summary
+          path: summary.md
