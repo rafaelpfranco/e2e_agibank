@@ -18,9 +18,10 @@ def generate_person_data() -> dict:
     last_clean  = strip_accents(raw_last).replace(" ", "").lower()
 
     # sufixo de dois dígitos aleatórios
-    suffix = f"{random.randint(0, 99):02}"
+    suffix = f"{random.randint(0, 99999):05}"
+    preffix = f"{random.randint(0, 99999):05}"
 
-    email = f"{first_clean}_{last_clean}_{suffix}@gmail.com"
+    email = f"{preffix}_{first_clean}_{last_clean}_{suffix}@gmail.com"
 
     return {
         "first_name": raw_first,

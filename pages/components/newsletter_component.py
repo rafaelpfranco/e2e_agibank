@@ -1,5 +1,5 @@
 from playwright.sync_api import Page, Locator
-
+from config import settings
 class NewsletterComponent:
     def __init__(self, page: Page):
         self._page = page
@@ -25,11 +25,11 @@ class NewsletterComponent:
         return self._success_message
 
     def subscribe(self, email: str) -> None:
-        self._email_input.wait_for(state="visible", timeout=5000)
+        self._email_input.wait_for(state="visible", timeout=settings.TIMEOUT)
         self._email_input.fill(email)
 
-        self._submit_button.wait_for(state="visible", timeout=5000)
+        self._submit_button.wait_for(state="visible", timeout=settings.TIMEOUT)
         self._submit_button.click()
 
-        self._success_message.wait_for(state="visible", timeout=10000)
+        self._success_message.wait_for(state="visible", timeout=settings.TIMEOUT)
 

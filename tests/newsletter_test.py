@@ -1,7 +1,7 @@
 from pages.news.news_page import NewsPage
 from utils.fake_data import generate_person_data
 from fixtures.newsletter_texts import NewsletterTexts
-
+from config import settings
 
 def test_newsletter_subscription_from_news_page(page):
     news_page = NewsPage(page)
@@ -11,18 +11,18 @@ def test_newsletter_subscription_from_news_page(page):
     news_page.navigate()
 
     heading = newsletter.get_heading()
-    assert heading.is_visible()
+    heading.wait_for(state="visible", timeout=settings.TIMEOUT)
     heading_text = heading.inner_text().strip()
     assert heading_text == NewsletterTexts.HEADING
 
     description = newsletter.get_description()
-    assert description.is_visible()
+    description.wait_for(state="visible", timeout=settings.TIMEOUT)
     description_text = description.inner_text().strip()
     assert description_text == NewsletterTexts.DESCRIPTION
 
     newsletter.subscribe(person["email"])
 
     success = newsletter.get_success_message()
-    assert success.is_visible()
+    success.wait_for(state="visible", timeout=settings.TIMEOUT)
     success_text = success.inner_text().strip()
     assert success_text == NewsletterTexts.SUCCESS_MESSAGE
