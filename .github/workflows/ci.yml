@@ -30,6 +30,9 @@ jobs:
         run: python -m playwright install --with-deps
 
       - name: Run your tests
+        env:
+          TIMEOUT: ${{ vars.TIMEOUT }}
+          BASE_URL: ${{ vars.BASE_URL }}
         run: pytest --tracing=retain-on-failure
 
       - name: Upload Playwright traces
