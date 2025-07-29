@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: E2E AGIBANK
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  e2e:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
