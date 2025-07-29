@@ -41,3 +41,9 @@ jobs:
         with:
           name: test-results
           path: test-results/
+
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: |
+            test-results/results.xml
