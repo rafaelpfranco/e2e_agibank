@@ -12,9 +12,18 @@ jobs:
     strategy:
       matrix:
         browser: [chromium, firefox, webkit]
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Prepare reports folder
+        run: |
+          if [ "${{ runner.os }}" != "Windows" ]; then
+            mkdir -p reports
+          else
+            mkdir reports
+          fi
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -25,7 +34,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          playwright install
+          playwright install --with-deps
 
       - name: Run tests on ${{ matrix.browser }}
         env:
@@ -43,6 +52,7 @@ jobs:
   summary:
     needs: test
     runs-on: ubuntu-latest
+
     steps:
       - name: Download all JUnit reports
         uses: actions/download-artifact@v3
