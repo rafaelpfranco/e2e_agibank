@@ -1,3 +1,4 @@
+# conftest.py
 import os
 import pytest
 from playwright.sync_api import sync_playwright
@@ -10,17 +11,22 @@ def page():
         browser = getattr(p, browser_name).launch(
             headless=True,
             channel="chrome",
-            args=["--lang=pt-BR"]
+            args=[
+                "--lang=pt-BR",
+                "--disable-gpu",
+                "--enable-features=NetworkService",
+                "--disable-dev-shm-usage"
+            ]
         )
         context = browser.new_context(
             base_url=settings.BASE_URL,
             locale="pt-BR",
+            viewport={"width": 1920, "height": 1080},
+            device_scale_factor=1
         )
-        context.tracing.start(screenshots=True, snapshots=True, sources=True)
-
+        context.route("**/*.{png,jpg,jpeg,svg,gif,css,woff2,ttf}", lambda route: route.abort())
         page = context.new_page()
-        try:
-            yield page
-        finally:
-            context.tracing.stop(path="trace.zip")
-            browser.close()
+        page.set_default_timeout(settings.TIMEOUT * 2)
+        page.goto(settings.BASE_URL, wait_until="networkidle")
+        yield page
+        browser.close()

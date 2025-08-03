@@ -19,9 +19,6 @@ Este projeto cobre automação de testes para três módulos principais do blog 
 * Realizar busca com termo inexistente
 * Realizar busca com termo existente
 
-**3. Home**
-
-* Abertura de uma postagem
 
 ---
 

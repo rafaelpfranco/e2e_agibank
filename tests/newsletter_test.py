@@ -1,5 +1,5 @@
 import pytest
-from pages.news.news_page import NewsPage
+from pages.news_page import NewsPage
 from utils.fake_data import generate_person_data
 from fixtures.newsletter_texts import NewsletterTexts
 from playwright.sync_api import expect
@@ -17,8 +17,29 @@ class TestNewsletter:
             state="visible", timeout=settings.TIMEOUT
         )
         
+    def test_newsletter_subscription_with_empty_email(self):
+        """
+        Verifica que ao tentar assinar sem preencher o e-mail, a mensagem campo obrigatório é exibida.
+        """
+        self.newsletter.subscribe(" ")
+        assert self.newsletter.get_invalid_validation_message() == NewsletterTexts.EMPTY_MESSAGE
+
+    def test_newsletter_subscription_with_invalid_email(self):
+        """
+        Verifica que ao usar e-mail inválido, a mensagem de campo inválido é exibida.
+        """
+        self.newsletter.subscribe("email_invalido")
+        validation_msg = (
+            self.newsletter
+                .get_invalid_validation_message()
+                .replace("\u00A0", " ")
+        )
+        assert validation_msg == NewsletterTexts.INVALID_EMAIL_MESSAGE
 
     def test_newsletter_subscription(self):
+        """
+        Verifica que um usuário consegue se inscrever com e-mail válido.
+        """
         person = generate_person_data()
 
         assert self.newsletter.get_heading().inner_text().strip() == NewsletterTexts.HEADING
@@ -41,16 +62,3 @@ class TestNewsletter:
                 .strip()
             == NewsletterTexts.SUCCESS_MESSAGE
         )
-
-    def test_newsletter_subscription_with_empty_email(self):
-        self.newsletter.subscribe(" ")
-        assert self.newsletter.get_invalid_validation_message() == NewsletterTexts.EMPTY_MESSAGE
-
-    def test_newsletter_subscription_with_invalid_email(self):
-        self.newsletter.subscribe("email_invalido")
-        validation_msg = (
-            self.newsletter
-                .get_invalid_validation_message()
-                .replace("\u00A0", " ")
-        )
-        assert validation_msg == NewsletterTexts.INVALID_EMAIL_MESSAGE
