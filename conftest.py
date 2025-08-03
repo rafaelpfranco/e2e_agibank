@@ -21,7 +21,7 @@ def page():
         context = browser.new_context(
             base_url=settings.BASE_URL,
             locale="pt-BR",
-            viewport={"width": 1280, "height": 720},
+            viewport={"width": 1920, "height": 1080},
             device_scale_factor=1
         )
         context.route("**/*.{png,jpg,jpeg,svg,gif,css,woff2,ttf}", lambda route: route.abort())
