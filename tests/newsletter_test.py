@@ -26,6 +26,7 @@ class TestNewsletter:
 
         self.newsletter.subscribe(person["email"])
 
+        print(person["email"])
         expect(self.page).to_have_url(
             "noticias/?subscribe=success#subscribe-blog-blog_subscription-3",
             timeout=settings.TIMEOUT

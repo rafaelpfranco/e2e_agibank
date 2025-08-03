@@ -9,12 +9,12 @@ def page():
     with sync_playwright() as p:
         browser = getattr(p, browser_name).launch(
             headless=True,
-            channel="chrome",            # força usar o Chrome instalado
-            args=["--lang=pt-BR"]        # define idioma
+            channel="chrome",
+            args=["--lang=pt-BR"]
         )
         context = browser.new_context(
             base_url=settings.BASE_URL,
-            locale="pt-BR",              # define locale no contexto
+            locale="pt-BR",
         )
         context.tracing.start(screenshots=True, snapshots=True, sources=True)
 
@@ -22,6 +22,5 @@ def page():
         try:
             yield page
         finally:
-            # 🔴 para o tracing ANTES de fechar o browser/context
             context.tracing.stop(path="trace.zip")
             browser.close()
