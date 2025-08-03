@@ -1,6 +1,6 @@
 from faker import Faker
-import random
 import unicodedata
+import uuid
 
 faker = Faker("pt_BR")
 
@@ -9,22 +9,18 @@ def strip_accents(text: str) -> str:
     return "".join(c for c in nfkd if not unicodedata.combining(c))
 
 def generate_person_data() -> dict:
-    # gera nome e sobrenome com o Faker
     raw_first = faker.first_name()
     raw_last  = faker.last_name()
 
-    # limpa acentos e espaços, e passa para minúsculas
     first_clean = strip_accents(raw_first).replace(" ", "").lower()
     last_clean  = strip_accents(raw_last).replace(" ", "").lower()
 
-    # sufixo de dois dígitos aleatórios
-    suffix = f"{random.randint(0, 99999):05}"
-    preffix = f"{random.randint(0, 99999):05}"
+    unique_id = uuid.uuid4().hex[:8]
 
-    email = f"{preffix}_{first_clean}_{last_clean}_{suffix}@gmail.com"
+    email = f"{first_clean}{last_clean}_{unique_id}@gmail.com"
 
     return {
         "first_name": raw_first,
-        "last_name": raw_last,
-        "email": email
+        "last_name":  raw_last,
+        "email":      email
     }

@@ -41,3 +41,6 @@ CACHEDIR.TAG
 
 # Miscellaneous
 *.retry
+
+# Ignorar o pacote de rastreamento
+tracer.zip
