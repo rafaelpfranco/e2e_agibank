@@ -9,3 +9,8 @@ class NewsletterTexts:
         "Encontre o e-mail agora e clique em 'Confirmar' para iniciar a inscrição."
     )
     EMPTY_MESSAGE = "Preencha este campo."
+    INVALID_EMAIL_MESSAGE = (
+        'Inclua um "@" no endereço de e-mail. '
+        '"email_invalido" está com um "@" faltando.'
+    )
+

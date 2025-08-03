@@ -16,6 +16,12 @@ def page():
             base_url=settings.BASE_URL,
             locale="pt-BR",              # define locale no contexto
         )
+        context.tracing.start(screenshots=True, snapshots=True, sources=True)
+
         page = context.new_page()
-        yield page
-        browser.close()
+        try:
+            yield page
+        finally:
+            # 🔴 para o tracing ANTES de fechar o browser/context
+            context.tracing.stop(path="trace.zip")
+            browser.close()
