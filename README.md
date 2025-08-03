@@ -86,13 +86,3 @@ pytest tests/newsletter_test.py::TestNewsletter::test_newsletter_subscription
 ```
 
 ---
-
-## 📦 Geração de Trace Apenas em Falha
-
-No `conftest.py` há um hook que captura o resultado do teste e gera um arquivo `trace-<nome_do_teste>.zip` **somente** quando o teste falhar. Abra-o com:
-
-```bash
-npx playwright show-trace trace-<nome_do_teste>.zip
-```
-
-Assim você tem um passo-a-passo interativo para inspecionar o que deu errado.
