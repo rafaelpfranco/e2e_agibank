@@ -17,7 +17,7 @@ def generate_person_data() -> dict:
 
     unique_id = uuid.uuid4().hex[:8]
 
-    email = f"{first_clean}.{last_clean}.{unique_id}@example.com"
+    email = f"{first_clean}{last_clean}_{unique_id}@gmail.com"
 
     return {
         "first_name": raw_first,
