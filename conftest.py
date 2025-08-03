@@ -7,10 +7,14 @@ from config import settings
 def page():
     browser_name = os.getenv("BROWSER", "chromium")
     with sync_playwright() as p:
-        browser = getattr(p, browser_name).launch(headless=True)
+        browser = getattr(p, browser_name).launch(
+            headless=True,
+            channel="chrome",            # força usar o Chrome instalado
+            args=["--lang=pt-BR"]        # define idioma
+        )
         context = browser.new_context(
             base_url=settings.BASE_URL,
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            locale="pt-BR",              # define locale no contexto
         )
         page = context.new_page()
         yield page

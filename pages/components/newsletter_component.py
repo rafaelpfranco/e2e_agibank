@@ -24,12 +24,13 @@ class NewsletterComponent:
     def get_success_message(self) -> Locator:
         return self._success_message
 
+    def get_invalid_validation_message(self) -> str:
+        return self._email_input.evaluate("el => el.validationMessage")
+
     def subscribe(self, email: str) -> None:
         self._email_input.wait_for(state="visible", timeout=settings.TIMEOUT)
         self._email_input.fill(email)
 
         self._submit_button.wait_for(state="visible", timeout=settings.TIMEOUT)
         self._submit_button.click()
-
-        self._success_message.wait_for(state="visible", timeout=settings.TIMEOUT)
 
